@@ -1,5 +1,5 @@
-/**
- * Copyright 2014 Google Inc. All Rights Reserved.
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,28 @@ package com.google.android.gms.location.sample.geofencing;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.GeofenceStatusCodes;
 
 /**
  * Geofence error codes mapped to error messages.
  */
-public class GeofenceErrorMessages {
+class GeofenceErrorMessages {
     /**
      * Prevents instantiation.
      */
     private GeofenceErrorMessages() {}
+
+    /**
+     * Returns the error string for a geofencing exception.
+     */
+    public static String getErrorString(Context context, Exception e) {
+        if (e instanceof ApiException) {
+            return getErrorString(context, ((ApiException) e).getStatusCode());
+        } else {
+            return context.getResources().getString(R.string.unknown_geofence_error);
+        }
+    }
 
     /**
      * Returns the error string for a geofencing error code.
